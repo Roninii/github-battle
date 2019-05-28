@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FaUser, FaStar, FaCodeBranch, FaExclamationTriangle } from 'react-icons/fa';
 
 import Card from './Card';
+import Loading from './Loading';
 import { fetchPopularRepos } from '../utils/api';
 
 function LanguagesNav({ selected, onUpdateLanguage }) {
@@ -15,7 +16,8 @@ function LanguagesNav({ selected, onUpdateLanguage }) {
             <button
               className="btn-clear nav-link"
               onClick={() => onUpdateLanguage(lang)}
-              style={lang === selected ? { color: 'rgb(187, 46, 31)' } : null}>
+              style={lang === selected ? { color: 'rgb(187, 46, 31)' } : null}
+            >
               {lang}
             </button>
           </li>
@@ -128,7 +130,7 @@ export default class Popular extends React.Component {
       <>
         <LanguagesNav selected={selectedLanguage} onUpdateLanguage={this.updateLanguage} />
 
-        {this.isLoading() && <p>LOADING</p>}
+        {this.isLoading() && <Loading text="Fetching repos" />}
 
         {error && <p className="center-text error">{erorr}</p>}
 
