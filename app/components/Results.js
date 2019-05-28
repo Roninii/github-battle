@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { battle } from '../utils/api';
 import Card from './Card';
 import Loading from './Loading';
+import Tooltip from './Tooltip';
 import { FaUsers, FaCompass, FaBriefcase, FaUserFriends, FaCode, FaUser } from 'react-icons/fa';
 
 function ProfileList({ profile }) {
@@ -14,14 +15,18 @@ function ProfileList({ profile }) {
       </li>
       {profile.location && (
         <li>
-          <FaCompass color="rgb(144, 116, 255)" size={22} />
-          {profile.location}
+          <Tooltip text="User's location">
+            <FaCompass color="rgb(144, 116, 255)" size={22} />
+            {profile.location}
+          </Tooltip>
         </li>
       )}
       {profile.company && (
         <li>
-          <FaBriefcase color="#795548" size={22} />
-          {profile.company}
+          <Tooltip text="User's company">
+            <FaBriefcase color="#795548" size={22} />
+            {profile.company}
+          </Tooltip>
         </li>
       )}
       <li>
@@ -91,8 +96,7 @@ export default class Results extends React.Component {
             subheader={`Score: ${winner.score.toLocaleString()}`}
             avatar={winner.profile.avatar_url}
             href={winner.profile.html_url}
-            name={winner.profile.login}
-          >
+            name={winner.profile.login}>
             <ProfileList profile={winner.profile} />
           </Card>
 
@@ -101,8 +105,7 @@ export default class Results extends React.Component {
             subheader={`Score: ${loser.score.toLocaleString()}`}
             avatar={loser.profile.avatar_url}
             href={loser.profile.html_url}
-            name={loser.profile.login}
-          >
+            name={loser.profile.login}>
             <ProfileList profile={loser.profile} />
           </Card>
         </div>
