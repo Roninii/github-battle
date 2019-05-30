@@ -10,60 +10,53 @@ const getErrorMsg = (message, username) => {
   return message;
 };
 
-const getProfile = username =>
-  fetch(`https://api.github.com/users/${username}${params}`)
-    .then(res => res.json())
-    .then(profile => {
-      if (profile.message) {
-        throw new Error(getErrorMsg(profile.message, username));
-      }
+const getProfile = async (username) => {
+  const response = await fetch(`https://api.github.com/users/${username}${params}`);
+  const profile = await response.json();
 
-      return profile;
-    });
+  if (profile.message) throw new Error(getErrorMsg(profile.message, username));
+  return profile;
+};
 
-const getRepos = username =>
-  fetch(`https://api.github.com/users/${username}/repos${params}`)
-    .then(res => res.json())
-    .then(repos => {
-      if (repos.message) {
-        throw new Error(getErrorMsg(repos.message, username));
-      }
+const getRepos = async (username) => {
+  const res = await fetch(`https://api.github.com/users/${username}/repos${params}`);
+  const repos = await res.json();
 
-      return repos;
-    });
+  if (repos.message) throw new Error(getErrorMsg(repos.message, username));
+  return repos;
+};
 
-const getStarCount = repos =>
+const getStarCount = (repos) =>
   repos.reduce((count, { stargazers_count }) => count + stargazers_count, 0);
 
 const calculateScore = (followers, repos) => followers * 3 + getStarCount(repos);
 
-const getUserData = player =>
-  Promise.all([getProfile(player), getRepos(player)]).then(([profile, repos]) => ({
+const getUserData = async (player) => {
+  const [profile, repos] = await Promise.all([getProfile(player), getRepos(player)]);
+  return {
     profile,
     score: calculateScore(profile.followers, repos),
-  }));
+  };
+};
 
-const sortPlayers = players => players.sort((a, b) => b.score - a.score);
+const sortPlayers = (players) => players.sort((a, b) => b.score - a.score);
 
-const battle = players =>
-  Promise.all([getUserData(players[0]), getUserData(players[1])]).then(results =>
-    sortPlayers(results),
-  );
+const battle = async (players) => {
+  const results = await Promise.all([getUserData(players[0]), getUserData(players[1])]);
+  return sortPlayers(results);
+};
 
-const fetchPopularRepos = language => {
+const fetchPopularRepos = async (language) => {
   const endpoint = window.encodeURI(
     `https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`,
   );
 
-  return fetch(endpoint)
-    .then(res => res.json())
-    .then(data => {
-      if (!data.items) {
-        throw new Error(data.message);
-      }
+  const res = await fetch(endpoint);
+  const data = await res.json();
 
-      return data.items;
-    });
+  if (!data.items) throw new Error(data.message);
+
+  return data.items;
 };
 
 export { fetchPopularRepos, battle };

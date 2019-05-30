@@ -85,7 +85,7 @@ export default class Popular extends React.Component {
     this.updateLanguage(selectedLanguage);
   }
 
-  updateLanguage = (selectedLanguage) => {
+  updateLanguage = async (selectedLanguage) => {
     const { repos } = this.state;
 
     this.setState({
@@ -94,23 +94,19 @@ export default class Popular extends React.Component {
     });
 
     if (!repos[selectedLanguage]) {
-      fetchPopularRepos(selectedLanguage)
-        .then((data) =>
-          this.setState(({ repos }) => ({
-            repos: {
-              ...repos,
-              [selectedLanguage]: data,
-            },
-            error: null,
-          })),
-        )
-        .catch(() => {
-          console.warn('Error fetching repos: ', error);
-
-          this.setState({
-            error: 'There was an error fetching the repositories',
-          });
-        });
+      try {
+        const data = await fetchPopularRepos(selectedLanguage);
+        this.setState(({ repos }) => ({
+          repos: {
+            ...repos,
+            [selectedLanguage]: data,
+          },
+          error: null,
+        }));
+      } catch (error) {
+        console.warn('Error fetching repos: ', error);
+        this.setState({ error: 'There was an error fetching the repositories' });
+      }
     }
   };
 
@@ -129,7 +125,7 @@ export default class Popular extends React.Component {
 
         {this.isLoading() && <Loading text="Fetching repos" />}
 
-        {error && <p className="center-text error">{erorr}</p>}
+        {error && <p className="center-text error">{error}</p>}
 
         {repos[selectedLanguage] && <ReposGrid repos={repos[selectedLanguage]} />}
       </>

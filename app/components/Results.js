@@ -54,25 +54,23 @@ export default class Results extends React.Component {
     loading: true,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { location } = this.props;
     const { playerOne, playerTwo } = queryString.parse(location.search);
-
-    battle([playerOne, playerTwo])
-      .then((players) => {
-        this.setState({
-          winner: players[0],
-          loser: players[1],
-          error: null,
-          loading: false,
-        });
-      })
-      .catch(({ message }) => {
-        this.setState({
-          error: message,
-          loading: false,
-        });
+    try {
+      const players = await battle([playerOne, playerTwo]);
+      this.setState({
+        winner: players[0],
+        loser: players[1],
+        error: null,
+        loading: false,
       });
+    } catch ({ message }) {
+      this.setState({
+        error: message,
+        loading: false,
+      });
+    }
   }
 
   render() {
