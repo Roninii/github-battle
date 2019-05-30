@@ -7,8 +7,9 @@ import Loading from './Loading';
 import Tooltip from './Tooltip';
 import { fetchPopularRepos } from '../utils/api';
 
-function LanguagesNav({ selected, onUpdateLanguage }) {
+const LanguagesNav = ({ selected, onUpdateLanguage }) => {
   const languages = ['All', 'JavaScript', 'Ruby', 'Java', 'CSS', 'Python'];
+
   return (
     <ul className="flex-center">
       {languages.map((lang, i) => {
@@ -25,50 +26,48 @@ function LanguagesNav({ selected, onUpdateLanguage }) {
       })}
     </ul>
   );
-}
+};
 
 LanguagesNav.propTypes = {
   selected: PropTypes.string.isRequired,
   onUpdateLanguage: PropTypes.func.isRequired,
 };
 
-function ReposGrid({ repos }) {
-  return (
-    <ul className="grid space-around">
-      {repos.map((repo, i) => {
-        const { name, owner, html_url, stargazers_count, forks, open_issues } = repo;
-        const { login, avatar_url } = owner;
+const ReposGrid = ({ repos }) => (
+  <ul className="grid space-around">
+    {repos.map((repo, i) => {
+      const { name, owner, html_url, stargazers_count, forks, open_issues } = repo;
+      const { login, avatar_url } = owner;
 
-        return (
-          <li key={html_url}>
-            <Card header={`#${i + 1}`} avatar={avatar_url} href={html_url} name={login}>
-              <ul className="card-list">
-                <li>
-                  <Tooltip text="Github username">
-                    <FaUser color="rgb(255, 191, 116)" size={22} />
-                    <a href={`https://github.com/${login}`}>{login}</a>
-                  </Tooltip>
-                </li>
-                <li>
-                  <FaStar color="rgb(255, 215, 0)" size={22} />
-                  {stargazers_count.toLocaleString()} stars
-                </li>
-                <li>
-                  <FaCodeBranch color="rgb(129, 195, 245)" size={22} />
-                  {forks.toLocaleString()} forks
-                </li>
-                <li>
-                  <FaExclamationTriangle color="rgb(241, 138, 147" size={22} />
-                  {open_issues.toLocaleString()} open issues
-                </li>
-              </ul>
-            </Card>
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
+      return (
+        <li key={html_url}>
+          <Card header={`#${i + 1}`} avatar={avatar_url} href={html_url} name={login}>
+            <ul className="card-list">
+              <li>
+                <Tooltip text="Github username">
+                  <FaUser color="rgb(255, 191, 116)" size={22} />
+                  <a href={`https://github.com/${login}`}>{login}</a>
+                </Tooltip>
+              </li>
+              <li>
+                <FaStar color="rgb(255, 215, 0)" size={22} />
+                {stargazers_count.toLocaleString()} stars
+              </li>
+              <li>
+                <FaCodeBranch color="rgb(129, 195, 245)" size={22} />
+                {forks.toLocaleString()} forks
+              </li>
+              <li>
+                <FaExclamationTriangle color="rgb(241, 138, 147" size={22} />
+                {open_issues.toLocaleString()} open issues
+              </li>
+            </ul>
+          </Card>
+        </li>
+      );
+    })}
+  </ul>
+);
 
 ReposGrid.propTypes = {
   repos: PropTypes.array.isRequired,
@@ -82,18 +81,21 @@ export default class Popular extends React.Component {
   };
 
   componentDidMount() {
-    this.updateLanguage(this.state.selectedLanguage);
+    const { selectedLanguage } = this.state;
+    this.updateLanguage(selectedLanguage);
   }
 
-  updateLanguage = selectedLanguage => {
+  updateLanguage = (selectedLanguage) => {
+    const { repos } = this.state;
+
     this.setState({
       selectedLanguage,
       error: null,
     });
 
-    if (!this.state.repos[selectedLanguage]) {
+    if (!repos[selectedLanguage]) {
       fetchPopularRepos(selectedLanguage)
-        .then(data =>
+        .then((data) =>
           this.setState(({ repos }) => ({
             repos: {
               ...repos,

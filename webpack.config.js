@@ -1,9 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: './app/index.js',
+  entry: ['@babel/polyfill', './app/index.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'index_bundle.js',
@@ -20,9 +20,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'app/index.html',
     }),
-    new CopyPlugin([
-      { from : '_redirects'}
-    ])
+    new CopyPlugin([{ from: '_redirects' }]),
   ],
   devServer: {
     historyApiFallback: true,

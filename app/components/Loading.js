@@ -17,11 +17,22 @@ export default class Loading extends React.Component {
     content: this.props.text,
   };
 
+  static propTypes = {
+    text: PropTypes.string.isRequired,
+    speed: PropTypes.number.isRequired,
+  };
+
+  static defaultProps = {
+    text: 'Loading',
+    speed: 300,
+  };
+
   componentDidMount() {
     const { speed, text } = this.props;
+    const { content } = this.state;
 
     this.interval = window.setInterval(() => {
-      this.state.content === text + '...'
+      content === `${text}...`
         ? this.setState({ content: text })
         : this.setState(({ content }) => ({ content: content + '.' }));
     }, speed);
@@ -32,16 +43,7 @@ export default class Loading extends React.Component {
   }
 
   render() {
-    return <p style={styles.content}>{this.state.content}</p>;
+    const { content } = this.state;
+    return <p style={styles.content}>{content}</p>;
   }
 }
-
-Loading.propTypes = {
-  text: PropTypes.string.isRequired,
-  speed: PropTypes.number.isRequired,
-};
-
-Loading.defaultProps = {
-  text: 'Loading',
-  speed: 300,
-};
