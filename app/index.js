@@ -1,49 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import Nav from './components/Nav';
-import { ThemeProvider } from './context/theme';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Loading from './components/Loading';
-
-const Popular = React.lazy(() => import('./components/Popular'));
-const Battle = React.lazy(() => import('./components/Battle'));
-const Results = React.lazy(() => import('./components/Results'));
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import Popular from "./components/Popular.jsx";
 
 class App extends React.Component {
-  state = {
-    theme: 'light',
-    toggleTheme: () => {
-      this.setState(({ theme }) => ({
-        theme: theme === 'light' ? 'dark' : 'light',
-      }));
-    },
-  };
-
   render() {
-    const { theme } = this.state;
-
     return (
-      <Router>
-        <ThemeProvider value={this.state}>
-          <div className={theme}>
-            <div className="container">
-              <Nav />
-
-              <React.Suspense fallback={<Loading />}>
-                <Switch>
-                  <Route path="/" exact component={Popular} />
-                  <Route path="/battle" exact component={Battle} />
-                  <Route path="/battle/results" component={Results} />
-                  <Route render={() => <h1>404</h1>} />
-                </Switch>
-              </React.Suspense>
-            </div>
-          </div>
-        </ThemeProvider>
-      </Router>
+      <div className="container">
+        <Popular />
+      </div>
     );
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<App />, document.querySelector("#app"));
