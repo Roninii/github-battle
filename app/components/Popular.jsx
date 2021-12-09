@@ -1,43 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { fetchPopularRepos } from "../utils/api";
+import LanguagesNav from "./LanguagesNav.jsx";
+import ReposGrid from "./ReposGrid.jsx";
 
-export default class Popular extends React.Component {
-  constructor(props) {
-    super(props);
+export default function Popular() {
+  const [selectedLanguage, setSelectedLanguage] = useState("All");
+  const [repos, setRepos] = useState({});
+  const [error, setError] = useState(null);
 
-    this.state = {
-      selectedLanguage: "All",
-    };
-  }
+  const isLoading = () => !repos[selectedLanguage] && error === null;
 
-  updateSelectedLanguage = (language) => {
-    this.setState({
-      selectedLanguage: language,
-    });
+  const updateSelectedLanguage = async (language) => {
+    setSelectedLanguage(language);
+    setError(null);
   };
 
-  render() {
-    const languages = ["All", "JavaScript", "Ruby", "Java", "CSS", "Python"];
-    return (
-      <ul className="flex-center">
-        {languages.map((language) => (
-          <li
-            key={language}
-            style={{
-              color:
-                this.state.selectedLanguage === language
-                  ? "hsl(264.7, 100%, 46.7%)"
-                  : "",
-            }}
-          >
-            <button
-              className="btn-clear nav-link"
-              onClick={() => this.updateSelectedLanguage(language)}
-            >
-              {language}
-            </button>
-          </li>
-        ))}
-      </ul>
-    );
-  }
+  useEffect(() => {
+    if (!repos[selectedLanguage]) {
+      fetchPopularRepos(selectedLanguage)
+        .then((data) => setRepos({ ...repos, [selectedLanguage]: data }))
+        .catch((e) => {
+          console.error(`Error fetching repos: ${e}`);
+          setError(`There was an error fething the repositories.`);
+        });
+    }
+  }, [selectedLanguage]);
+
+  return (
+    <>
+      <LanguagesNav
+        selected={selectedLanguage}
+        updateSelectedLanguage={updateSelectedLanguage}
+      />
+
+      {isLoading() && <p>LOADING</p>}
+      {error && <p>{error}</p>}
+      {repos[selectedLanguage] && <ReposGrid repos={repos[selectedLanguage]} />}
+    </>
+  );
 }
