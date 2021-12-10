@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchPopularRepos } from "../utils/api";
-import LanguagesNav from "./LanguagesNav.jsx";
-import ReposGrid from "./ReposGrid.jsx";
+import LanguagesNav from "../components/LanguagesNav.jsx";
+import ReposGrid from "../components/ReposGrid.jsx";
 
 export default function Popular() {
   const [selectedLanguage, setSelectedLanguage] = useState("All");
