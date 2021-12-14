@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import Instructions from "../components/Instructions.jsx";
 import PlayerInput from "../components/PlayerInput.jsx";
 import PlayerPreview from "../components/PlayerPreview.jsx";
+import Results from "../components/Results.js";
 
 export default function Battle() {
   const [playerOne, setPlayerOne] = useState(null);
   const [playerTwo, setPlayerTwo] = useState(null);
+  const [battle, setBattle] = useState(false);
 
-  return (
+  return battle ? (
+    <Results playerOne={playerOne} playerTwo={playerTwo} />
+  ) : (
     <>
       <Instructions />
       <section className="players-container">
@@ -15,29 +19,48 @@ export default function Battle() {
         <div className="row space-around">
           {playerOne === null ? (
             <PlayerInput
-              onSubmit={(player) => setPlayerOne(player)}
+              onSubmit={(player) => {
+                setPlayerOne(player);
+              }}
               label={`Player One`}
             />
           ) : (
             <PlayerPreview
               username={playerOne}
               label="Player One"
-              onReset={() => setPlayerOne(null)}
+              onReset={() => {
+                setPlayerOne(null);
+              }}
             />
           )}
           {playerTwo === null ? (
             <PlayerInput
-              onSubmit={(player) => setPlayerTwo(player)}
+              onSubmit={(player) => {
+                setPlayerTwo(player);
+              }}
               label={`Player Two`}
             />
           ) : (
             <PlayerPreview
               username={playerTwo}
               label="Player Two"
-              onReset={() => setPlayerTwo(null)}
+              onReset={() => {
+                setPlayerTwo(null);
+              }}
             />
           )}
         </div>
+
+        {playerOne && playerTwo && (
+          <button
+            className="btn btn-dark btn-space"
+            onClick={() => {
+              setBattle(true);
+            }}
+          >
+            Battle
+          </button>
+        )}
       </section>
     </>
   );

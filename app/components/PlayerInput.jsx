@@ -23,7 +23,9 @@ export default function PlayerInput({ onSubmit, label }) {
           placeholder="github username"
           autoComplete="off"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => {
+            setUsername(e.target.value);
+          }}
         />
         <button className="btn btn-dark" type="submit" disabled={!username}>
           Submit
