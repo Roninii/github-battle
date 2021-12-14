@@ -6,6 +6,7 @@ import {
   FaCodeBranch,
   FaExclamationTriangle,
 } from "react-icons/fa";
+import Card from "./Card.jsx";
 
 export default function Repo({
   i,
@@ -18,33 +19,32 @@ export default function Repo({
   open_issues,
 }) {
   return (
-    <li key={html_url} className="repo bg-light">
-      <h4 className="header-lg center-text">#{i + 1}</h4>
-      <img src={avatar_url} alt={`Avatar for ${username}`} className="avatar" />
-      <h2 className="center-text">
-        <a href={html_url} className="link">
-          {username}
-        </a>
-      </h2>
-
-      <ul class="card-list">
-        <li>
-          <FaUser color="rgb(255, 191, 116)" size={22} />
-          <a href={`https://github.com/${username}`}>{username}</a>
-        </li>
-        <li>
-          <FaStar color="rgb(255, 215, 0" size={22} />
-          {stargazers_count.toLocaleString()} stars
-        </li>
-        <li>
-          <FaCodeBranch color="rgb(129, 195, 245)" size={22} />
-          {forks}
-        </li>
-        <li>
-          <FaExclamationTriangle color="rgb(241, 138, 147)" size={22} />
-          {open_issues.toLocaleString()} open issues
-        </li>
-      </ul>
+    <li key={html_url}>
+      <Card
+        header={`#${i + 1}`}
+        avatar={avatar_url}
+        name={username}
+        href={html_url}
+      >
+        <ul class="card-list">
+          <li>
+            <FaUser color="rgb(255, 191, 116)" size={22} />
+            <a href={`https://github.com/${username}`}>{username}</a>
+          </li>
+          <li>
+            <FaStar color="rgb(255, 215, 0" size={22} />
+            {stargazers_count.toLocaleString()} stars
+          </li>
+          <li>
+            <FaCodeBranch color="rgb(129, 195, 245)" size={22} />
+            {forks}
+          </li>
+          <li>
+            <FaExclamationTriangle color="rgb(241, 138, 147)" size={22} />
+            {open_issues.toLocaleString()} open issues
+          </li>
+        </ul>
+      </Card>
     </li>
   );
 }

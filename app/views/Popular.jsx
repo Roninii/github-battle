@@ -34,7 +34,7 @@ export default function Popular() {
       />
 
       {isLoading() && <p>LOADING</p>}
-      {error && <p>{error}</p>}
+      {error && <p className="center-text error">{error}</p>}
       {repos[selectedLanguage] && <ReposGrid repos={repos[selectedLanguage]} />}
     </>
   );
