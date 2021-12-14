@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Instructions from "../components/Instructions.jsx";
 import PlayerInput from "../components/PlayerInput.jsx";
 import PlayerPreview from "../components/PlayerPreview.jsx";
-import Results from "../components/Results.js";
+import Results from "../components/Results.jsx";
 
 export default function Battle() {
   const [playerOne, setPlayerOne] = useState(null);
