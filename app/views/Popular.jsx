@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { fetchPopularRepos } from "../utils/api";
 import LanguagesNav from "../components/LanguagesNav.jsx";
 import ReposGrid from "../components/ReposGrid.jsx";
+import Loading from "../components/Loading.jsx";
 
 export default function Popular() {
   const [selectedLanguage, setSelectedLanguage] = useState("All");
@@ -33,7 +34,7 @@ export default function Popular() {
         updateSelectedLanguage={updateSelectedLanguage}
       />
 
-      {isLoading() && <p>LOADING</p>}
+      {isLoading() && <Loading text="Fetching Repos" />}
       {error && <p className="center-text error">{error}</p>}
       {repos[selectedLanguage] && <ReposGrid repos={repos[selectedLanguage]} />}
     </>
