@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { battle } from "../utils/api";
 import Profile from "./Profile.jsx";
+import Loading from "./Loading.jsx";
 
 export default function Results(props) {
   const [winner, setWinner] = useState(null);
@@ -29,7 +31,7 @@ export default function Results(props) {
   const isTie = winner?.score === loser?.score;
 
   if (loading) {
-    return <p>LOADING</p>;
+    return <Loading text="Battling" />;
   }
 
   if (error) {
@@ -37,9 +39,20 @@ export default function Results(props) {
   }
 
   return (
-    <div className="grid space-around container-sm">
-      {winner && <Profile isTie={isTie} user={winner} />}
-      {loser && <Profile isTie={isTie} user={loser} />}
-    </div>
+    <>
+      <div className="grid space-around container-sm">
+        {winner && <Profile header={isTie ? "Tie" : "Winner"} user={winner} />}
+        {loser && <Profile header={isTie ? "Tie" : "Loser"} user={loser} />}
+      </div>
+      <button className="btn btn-dark btn-space" onClick={props.onReset}>
+        Reset
+      </button>
+    </>
   );
 }
+
+Results.propTypes = {
+  playerOne: PropTypes.string.isRequired,
+  playerTwo: PropTypes.string.isRequired,
+  onReset: PropTypes.func.isRequired,
+};

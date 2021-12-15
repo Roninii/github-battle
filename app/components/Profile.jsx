@@ -10,10 +10,10 @@ import {
 } from "react-icons/fa";
 import Card from "./Card.jsx";
 
-export default function Profile({ isTie, user }) {
+export default function Profile({ header, user }) {
   return (
     <Card
-      header={isTie ? "Tie" : "Winner"}
+      header={header}
       subheader={`Score: ${user.score.toLocaleString()}`}
       avatar={user.profile.avatar_url}
       href={user.profile.html_url}
@@ -50,6 +50,6 @@ export default function Profile({ isTie, user }) {
 }
 
 Profile.propTypes = {
-  isTie: PropTypes.bool.isRequired,
+  header: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,
 };

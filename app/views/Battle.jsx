@@ -9,8 +9,18 @@ export default function Battle() {
   const [playerTwo, setPlayerTwo] = useState(null);
   const [battle, setBattle] = useState(false);
 
+  const resetBattle = () => {
+    setPlayerOne(null);
+    setPlayerTwo(null);
+    setBattle(false);
+  };
+
   return battle ? (
-    <Results playerOne={playerOne} playerTwo={playerTwo} />
+    <Results
+      playerOne={playerOne}
+      playerTwo={playerTwo}
+      onReset={resetBattle}
+    />
   ) : (
     <>
       <Instructions />
