@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {
   FaCompass,
   FaBriefcase,
@@ -47,3 +48,8 @@ export default function Profile({ isTie, user }) {
     </Card>
   );
 }
+
+Profile.propTypes = {
+  isTie: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired,
+};
