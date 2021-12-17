@@ -9,6 +9,7 @@ import {
   FaCode,
 } from "react-icons/fa";
 import Card from "./Card.jsx";
+import Tooltip from "./Tooltip.jsx";
 
 export default function Profile({ header, user }) {
   return (
@@ -26,14 +27,18 @@ export default function Profile({ header, user }) {
         </li>
         {user.profile.location && (
           <li>
-            <FaCompass color="rgb(144, 116, 255)" size={22} />
-            {user.profile.location}
+            <Tooltip text="User's Location">
+              <FaCompass color="rgb(144, 116, 255)" size={22} />
+              {user.profile.location}
+            </Tooltip>
           </li>
         )}
         {user.profile.company && (
           <li>
-            <FaBriefcase color="#795548" size={22} />
-            {user.profile.company}
+            <Tooltip text="User's Company">
+              <FaBriefcase color="#795548" size={22} />
+              {user.profile.company}
+            </Tooltip>
           </li>
         )}
         <li>
